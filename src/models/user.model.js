@@ -1,6 +1,6 @@
 import mongoose ,{Schema} from "mongoose";
 import bcrypt from bcrypt
-import  JsonWebToken from "jsonwebtoken";//it is a bearer token jis ke bhi pass ho data bheja jayega 
+import  jwt from "jsonwebtoken";//it is a bearer token jis ke bhi pass ho data bheja jayega 
 
 const userSchema=new Schema({
 username:{
