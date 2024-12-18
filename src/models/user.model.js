@@ -1,5 +1,5 @@
 import mongoose ,{Schema} from "mongoose";
-import bcrypt from bcrypt
+import bcrypt from "bcrypt"
 import  jwt from "jsonwebtoken";//it is a bearer token jis ke bhi pass ho data bheja jayega 
 
 const userSchema=new Schema({
@@ -53,7 +53,7 @@ email:{
 })
 userSchema.pre("save", async function (next){
   if(!this.isModified("password"))return next();
-  this.password=bcrypt(this.password,10);
+  this.password= await bcrypt(this.password,10);
   next();
 })
 userSchema.methods.isPasswordCorrect=async function(password){
