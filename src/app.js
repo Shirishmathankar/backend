@@ -14,12 +14,12 @@ app.use(express.urlencoded({
     limit:"16kb"
 }))//if data is in url is not send directly we %,= is added to url so we have to pass like this
 app.use(express.static("public"))//to store files in our server
-app.use(cookieParser)
+app.use(cookieParser())
 
 //cookie parser is use to acces cookie user browser
 
-import Router from "./routes/user.routes.js";
+import router from "./routes/user.routes.js";
 
-app.use("/users",Router);
+app.use("/api/v1/users",router)
 
 export default app
