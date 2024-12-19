@@ -7,12 +7,12 @@ import Apiresposnse from "../utils/Apiresponse.js";
 
 const registerUser = asynchandler(async (req, res) => {
    
-     const {username,fullname,password,gmail}=req.body;
+     const {username,fullname,password,email}=req.body;
 
-     if([username,fullname,password,gmail].some((feilds)=>fields?.trim()==="")){
+     if([username,fullname,password,email].some((feilds)=>feilds?.trim()==="")){
         throw new APIError(400,"all fields are required")
      };
-     const ExistedUser=await User.findone(
+     const ExistedUser=await User.findOne(
       {
         $or:[{email},{username}]
       }
@@ -20,8 +20,9 @@ const registerUser = asynchandler(async (req, res) => {
      if(ExistedUser){
        throw new APIError(409,"user with email or username is exist") 
      }
-     const avatarlocalpath=req.files?.avatar[0]?.path;
-     const coverimagelocalpath=req.files?.coverimage[0]?.path;
+     const avatarlocalpath=await req.files?.avatar[0]?.path;
+     const coverimagelocalpath= await req.files?.coverimage[0]?.path;
+    // console.log("avatar",req.files)
 
      if(!avatarlocalpath)
      {
@@ -42,9 +43,9 @@ const registerUser = asynchandler(async (req, res) => {
       email,
       password,
       fullname,
-      username:username.toLowerCase(),
+      username:username?.toLowerCase(),
      })
-  const createduser=await user.findById(user._id).select(
+  const createduser=await User.findById(user._id).select(
     "-password -refreshToken"
   )
   if(!createduser){

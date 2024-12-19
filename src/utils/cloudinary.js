@@ -15,11 +15,12 @@ import fs from "fs"
                 return null
             }
             //upload file to the cloudinary
-            const response=await cloudinary.uploader.upload(filepath,{
+            const response= await cloudinary.uploader.upload(localfilepath,{
                 resource_type:'auto'
             })
-            console.log("file is uploaded successfully",response);
-            return response
+           
+           fs.unlinkSync(localfilepath)
+           return response
      }
      catch(error){
       fs.unlinkSync(localfilepath)
