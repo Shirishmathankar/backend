@@ -42,6 +42,7 @@ email:{
     password:{
         type:String,
         required:true,
+        
     },
     refreshToken:{
      type:String
@@ -61,7 +62,7 @@ return await bcrypt.compare(password,this.password)
 }///mongoose have lot of methods
  
 userSchema.methods.generateAccessToken= function(){
-    jwt.sign({
+   return  jwt.sign({
         _id:this._id,
         email:this.email,
         username:this.username,
@@ -74,7 +75,7 @@ userSchema.methods.generateAccessToken= function(){
 )
 }
 userSchema.methods.generateRefreshToken=function(){
-    jwt.sign({
+    return jwt.sign({
         _id:this._id,
 
     },
