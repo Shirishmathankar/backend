@@ -184,7 +184,7 @@ const loginUser=asynchandler(async (req,res) => {
  })
  const changeCurrentPassword = asynchandler(async (req,res)=>{
      const {oldPassword, newPassword } = req.body
-     const user = await User.findById(req.user?.id);
+     const user = await User.findById(req.user?._id);
       
       const isPasswordCorrect = await user.isPasswordCorrect(oldPassword)
 
@@ -202,5 +202,27 @@ const loginUser=asynchandler(async (req,res) => {
   return res.status(200).json(200,Apiresponse(req.user),"current user successfully get")
 
  })
-export  {registerUser,loginUser,logoutUser,refreshAccessToken,getCurrentUser,changeCurrentPassword};
+
+ const updateUserAvatar = asynchandler(async (req,res)=>{
+     const avatarlocalpath=req.file.path
+     if(!avatarlocalpath){
+       throw new APIError(400, "avatar file is missing ")
+     }
+     const avatar = await uploadcloudinary(avatarlocalpath);
+
+     if(!avatar.url){
+      throw new APIError(400, "Error while uploading on avatar")
+     }
+
+     const user = await findByIdAndUpdate(req.user._id, {
+       $set:{
+        avatar: avatar.url
+       }
+     },{
+      new : true
+     }).select("-Password")
+
+     return res.status(200).json(new Apiresponse(200,user,"image update successfully"))
+ })
+export  {registerUser,loginUser,logoutUser,refreshAccessToken,getCurrentUser,changeCurrentPassword,updateUserAvatar};
 
